@@ -1,4 +1,5 @@
 ﻿#include "Film.h"
+#include "sort.h"
 #include <string>
 #include <vector>
 #include <iomanip>
@@ -16,17 +17,31 @@ void printHeader(std::ostream& out)
 	out << "_____________________________________________________________________________________________" << '\n';
 }
 
-
-//корректность ФИО
-bool isFio()
+bool isLetter(std::string&);
+bool isLetter(std::string& a)
 {
-	return true;
+	if ((a <= "А" && a >= "Я") || (a <= "а" && a >= "я"))
+	{
+		return true;
+	}
+	return false;
 }
 
+
+//корректность ФИО
+//bool isFio(std::string& a)
+//{
+//
+//}
+
 //корректность года
-bool isYear()
+bool isYear(const int& f)
 {
-	return true;
+	if (f > 1895 && f < 2020)
+	{
+		return true;
+	}
+	return false;
 }
 
 //корректность жанра
@@ -35,31 +50,23 @@ bool isGenre()
 	return true;
 }
 
-//Сортировка вставками(метод простых вставок)
-template <typename T>
-std::vector<T> insertion_sort(std::vector<T>& filmV)
+Film findLast(std::vector<Film>& filmV)
 {
-	/*
-	Сортировка вставками наиболее эффективна когда массив уже частично отсортирован и когда элементов массива не много.
-	Если же элементов меньше 10 то данный алгоритм является лучшим.
-	На каждом шаге сортировки сравнивается текущий элемент со всеми элементами в отсортированной части. 
-    */
-	int item;
-	for (int i = 1; i < int(filmV.size()); i++)
+	int max = filmV[0].getYear();
+	int imax = 0;
+
+	for (int i = 0; i < filmV.size() - 1; ++i)
 	{
-		T temp = filmV[i]; //  временная переменная для хранения значения элемента - инициализируем временную переменную текущим значением элемента массива
-		item = i - 1; // запоминаем индекс предыдущего элемента массива
-		while (item >= 0 && filmV[item] > temp) // пока индекс не равен 0 и предыдущий элемент массива больше текущего, изменив знак на >, массив будет сортироваться по убыванию.
+		if (filmV[i].getYear() > max)
 		{
-			filmV[item + 1] = filmV[item]; // перестановка элементов массива
-			filmV[item] = temp;
-			item--;
+			max = filmV[i].getYear();
+			imax = i;
 		}
 	}
-	return filmV;
+	Film lastFilm = filmV[imax];
+	return lastFilm;
 }
 
-//вывод на экран 
 
 int main()
 {
@@ -77,7 +84,7 @@ int main()
 	in.open(fileName);
 	if (!in.is_open())
 	{
-		std::cerr << "err";
+		std::cerr << "Не удалось открыть файл!";
 		return 1;
 	}
 
@@ -106,12 +113,18 @@ int main()
 		j++;
 
 		//год
+
 		int year = 0;
 		int length = inVector[j].size();
 		for (int i = 0; i < length; i++)
 		{
 			int d = int((inVector[j])[i]) - int('0');
 			year = d + year * 10;
+		}
+		if (!isYear(year))
+		{
+			std::cerr << "Ошибка входных данных в строке " << (j + 1);
+			return 1;
 		}
 		filmV[i].setYear(year);
 		j++;
@@ -126,26 +139,31 @@ int main()
 	}
 	in.close();
 	//----------------------------------------- 4 поиск ------------------------------------ 
-	//----------------------------------------- 5 сортировка-------------------------------- 
+	std::cout << "Последний вышедший фильм это: " << '\n';
+	std::cout << findLast(filmV) << '\n';
+
+	//----------------------------------------- 5 сортировка с выводом в файл--------------- 
 	out.open("o.txt");
 	if (!out.is_open())
 	{
-		std::cerr << "err";
+		std::cerr << "Не удалось открыть файл!";
 		return 1;
 	}
+	out << "До сортировки:" << std::endl;
 	printHeader(out);
-	for (int i = 0; i < filmV.size(); i++) 
+	for (int i = 0; i < filmV.size(); i++)
 	{
 		out << filmV[i];
 	}
-
-	out.close();
-
-	std::cout << "Последний вышедший фильм: " << '\n';
+	out << "После сортировки:" << std::endl;
 	insertion_sort(filmV);
-	printHeader(std::cout);
+
+	printHeader(out);
 	for (int i = 0; i < filmV.size(); i++)
 	{
-		std::cout << filmV[i];
+		out << filmV[i];
 	}
+	out.close();
+
+	return 0;
 }

@@ -23,12 +23,15 @@
     <ClInclude Include="Film.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="sort.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="i.txt">
+    <Text Include="o.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="o.txt">
+    <Text Include="i.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

@@ -143,10 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Film.h" />
+    <ClInclude Include="sort.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="i.txt" />
     <Text Include="o.txt" />
+    <Text Include="i.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

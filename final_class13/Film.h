@@ -82,7 +82,7 @@ public:
 	bool operator<= (const Film& f) const;
 
 
-	//friend std::istream& operator>> (std::istream& in, Film& f);
+	friend std::istream& operator>> (std::istream& in, Film& f);
 	friend std::ostream& operator<< (std::ostream& out, const Film& f);
 };
 
@@ -123,7 +123,6 @@ bool Film::operator<=(const Film& f) const
 
 std::ostream& operator<< (std::ostream& out, const Film& f)
 {
-	
 	out << '\n';
 	out << std::setw(25) << std::left << f.titleOfMovie_;
 	out << std::setw(20) << std::left << f.producerName_;
@@ -133,3 +132,8 @@ std::ostream& operator<< (std::ostream& out, const Film& f)
 	out << '\n';
 		return out;
 }
+
+//std::ostream& operator>> (std::ostream& in, const Film& f)
+//{
+//
+//}

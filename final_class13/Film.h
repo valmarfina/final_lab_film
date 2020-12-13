@@ -5,7 +5,6 @@ class Film
 {
 private:
 	// 1) Описание полей класса
-
 	//название фильма
 	std::string titleOfMovie_;
 	//имя режиссёра
@@ -82,7 +81,7 @@ public:
 	bool operator<= (const Film& f) const;
 
 
-	friend std::istream& operator>> (std::istream& in, Film& f);
+	//friend std::istream& operator>> (std::istream& in, Film& f);
 	friend std::ostream& operator<< (std::ostream& out, const Film& f);
 };
 

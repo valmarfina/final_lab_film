@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <regex>
 
 void printHeader(std::ostream& out)
 {
@@ -17,22 +18,28 @@ void printHeader(std::ostream& out)
 	out << "_____________________________________________________________________________________________" << '\n';
 }
 
-bool isLetter(std::string&);
-bool isLetter(std::string& a)
-{
-	if ((a <= "А" && a >= "Я") || (a <= "а" && a >= "я"))
-	{
-		return true;
-	}
-	return false;
-}
-
 
 //корректность ФИО
-//bool isFio(std::string& a)
-//{
-//
-//}
+/*
+[А-Я]      # первая буква должна быть заглавной
+[а-я]+     # и хотя бы ещё одна прописная
+\s+        # хотя бы один пробел между фамилией и именем
+[А-Я]      # одна буква имени
+\.         # и точка за ней
+\s+[А-Я]\. # аналогично для отчества
+*/
+bool isFio(std::string& a)
+{
+	std::regex reg("([А-Я][а-я]{1,20} [А-Я]\. [А-Я]\.)");
+
+		if (std::regex_match(a.c_str(), reg))
+		{
+			return true;
+		}
+	
+
+	return false;
+}
 
 //корректность года
 bool isYear(const int& f)
@@ -45,9 +52,36 @@ bool isYear(const int& f)
 }
 
 //корректность жанра
-bool isGenre()
+bool isGenre(const std::string& f)
 {
-	return true;
+	const int N_GENRES = 14;
+	std::string GENRES[N_GENRES] =
+	{ "боевик",
+		"вестерн",
+		"гангстерский фильм",
+		"детектив",
+		"драма",
+		"комедия",
+		"мелодрама",
+		"приключенческий",
+		"сказка",
+		"трагедия",
+		"трагикомедия",
+		"триллер",
+		"фантастика",
+		"ужасы"
+	};
+
+	for (int i = 0; i < N_GENRES; i++)
+	{
+		if (GENRES[i] == f)
+		{
+			return true;
+			break;
+		}
+	}
+
+	return false;
 }
 
 Film findLast(std::vector<Film>& filmV)
@@ -99,7 +133,7 @@ int main()
 	std::vector<Film> filmV(inVector.size() / 5);
 
 
-	//----------------------------------------- 3 вектор обьектов--------------------------- 
+	//----------------------------------------- 3 вектор обьектов && проверки -------------- 
 	for (int i = 0; i < inVector.size() / 5; i++)
 	{
 		static int j = 0;
@@ -109,6 +143,11 @@ int main()
 		j++;
 
 		//имя режиссёра
+		if (!isFio(inVector[j]))
+		{
+			std::cerr << "Ошибка входных данных в строке " << (j + 1);
+			return 1;
+		}
 		filmV[i].setProducerName(inVector[j]);
 		j++;
 
@@ -130,17 +169,28 @@ int main()
 		j++;
 
 		//имя сценариста
+		if (!isFio(inVector[j]))
+		{
+			std::cerr << "Ошибка входных данных в строке " << (j + 1);
+			return 1;
+		}
 		filmV[i].setScenaristName(inVector[j]);
 		j++;
 
 		//жанр
+		if (!isGenre(inVector[j]))
+		{
+			std::cerr << "Ошибка входных данных в строке " << (j + 1);
+			return 1;
+		}
 		filmV[i].setFilmGenre(inVector[j]);
 		j++;
 	}
 	in.close();
 	//----------------------------------------- 4 поиск ------------------------------------ 
-	std::cout << "Последний вышедший фильм это: " << '\n';
-	std::cout << findLast(filmV) << '\n';
+	std::cout << "Последний вышедший фильм это: " << std::endl;
+	printHeader(std::cout);
+	std::cout << findLast(filmV) << std::endl;
 
 	//----------------------------------------- 5 сортировка с выводом в файл--------------- 
 	out.open("o.txt");

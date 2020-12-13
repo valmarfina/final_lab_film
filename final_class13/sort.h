@@ -1,7 +1,6 @@
 #include <vector>
-#ifndef PAYMENT_SEARCHMAX_H
-#define PAYMENT_SEARCHMAX_H
-
+#ifndef SORT_H
+#define SORT_H
 
 //Сортировка вставками(метод простых вставок)
 template <typename T>
@@ -12,6 +11,7 @@ std::vector<T> insertion_sort(std::vector<T>& filmV)
 	Если же элементов меньше 10 то данный алгоритм является лучшим.
 	На каждом шаге сортировки сравнивается текущий элемент со всеми элементами в отсортированной части.
 	*/
+
 	int item;
 	for (int i = 1; i < int(filmV.size()); i++)
 	{

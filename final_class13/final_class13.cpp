@@ -44,7 +44,7 @@ bool isFio(std::string& a)
 //корректность года
 bool isYear(const int& f)
 {
-	if (f > 1895 && f < 2020)
+	if (f > 1894 && f < 2021)
 	{
 		return true;
 	}
@@ -89,7 +89,7 @@ Film findLast(std::vector<Film>& filmV)
 	int max = filmV[0].getYear();
 	int imax = 0;
 
-	for (int i = 0; i < filmV.size() - 1; ++i)
+	for (int i = 0; i < filmV.size(); ++i)
 	{
 		if (filmV[i].getYear() > max)
 		{

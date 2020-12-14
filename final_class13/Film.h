@@ -47,6 +47,19 @@ public:
 		filmGenre_ = o.filmGenre_;
 	}
 
+	// 7 ѕерегрузка оператора присваивани€
+	Film& operator= (const Film& f)
+	{
+		// ¬ыполн€ем копирование значений
+		titleOfMovie_ = f.titleOfMovie_;
+		producerName_ = f.producerName_;
+		year_ = f.year_;
+		scenaristName_ = f.scenaristName_;
+		filmGenre_ = f.filmGenre_;
+
+		// ¬озвращаем текущий объект, чтобы иметь возможность св€зать в цепочку выполнение нескольких операций присваивани€
+		return *this;
+	}
 
 	//деструктор
 	~Film() {}
@@ -80,59 +93,18 @@ public:
 	bool operator>= (const Film& f) const;
 	bool operator<= (const Film& f) const;
 
-
-	//friend std::istream& operator>> (std::istream& in, Film& f);
+	//friend 
+	friend std::istream& operator>> (std::istream& in, Film& f);
 	friend std::ostream& operator<< (std::ostream& out, const Film& f);
+
+	//префиксного инкремента как метод класса
+	Film& operator++();
+
+	//постфиксный инкремента
+	friend Film operator++(Film& ref, int d);
+
+	//бинар - через друж
+	friend Film operator-(Film f, Film f1);
+
 };
 
-
-//ќператоры отношени€
-bool Film::operator<(const Film& f) const
-{
-	if (this == &f)
-	{
-		return false;
-	}
-	return this->year_ < f.year_;
-}
-bool Film::operator>(const Film& f) const
-{
-	if (this == &f)
-	{
-		return false;
-	}
-	return this->year_ < f.year_;
-}
-
-bool Film::operator==(const Film& f) const
-{
-	return this->year_ == f.year_;
-}
-
-bool Film::operator>=(const Film& f) const
-{
-	return this->year_ >= f.year_;
-}
-
-bool Film::operator<=(const Film& f) const
-{
-	return this->year_ <= f.year_;
-}
-
-
-std::ostream& operator<< (std::ostream& out, const Film& f)
-{
-	out << '\n';
-	out << std::setw(25) << std::left << f.titleOfMovie_;
-	out << std::setw(20) << std::left << f.producerName_;
-	out << std::setw(8) << std::left << f.year_;
-	out << std::setw(20) << std::left << f.scenaristName_;
-	out << std::setw(15) << std::left << f.filmGenre_;
-	out << '\n';
-		return out;
-}
-
-//std::ostream& operator>> (std::ostream& in, const Film& f)
-//{
-//
-//}
